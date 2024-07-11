@@ -1,7 +1,13 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { AiFillBug } from 'react-icons/ai';
+import { cn } from './lib/utils';
 
 const NavBar = () => {
+  const currentPath = usePathname();
+
   const links = [
     {
       label: 'Dashboard',
@@ -23,7 +29,10 @@ const NavBar = () => {
           <Link
             key={link.href}
             href={link.href}
-            className="text-zinc-500 hover:text-zinc-800 transition-colors"
+            className={cn(
+              'text-zinc-500 hover:text-zinc-800 transition-colors',
+              { 'text-zinc-900': link.href === currentPath }
+            )}
           >
             {link.label}
           </Link>
