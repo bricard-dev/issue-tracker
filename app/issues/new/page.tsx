@@ -28,6 +28,27 @@ const NewIssuePage = () => {
   });
   const [error, setError] = useState('');
 
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      // With Fetch
+      // const response = await fetch('/api/issues', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-type': 'application/json',
+      //   },
+      //   body: JSON.stringify(data),
+      // });
+      // if (!response.ok) {
+      //   const errorData = await response.json();
+      //   throw new Error();
+      // }
+      await axios.post('/api/issues', data);
+      router.push('/issues');
+    } catch (error) {
+      setError('An unexpected error occurred.');
+    }
+  });
+
   return (
     <div className="max-w-xl">
       {error && (
@@ -35,29 +56,7 @@ const NewIssuePage = () => {
           <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form
-        className="max-w-xl space-y-3"
-        onSubmit={handleSubmit(async (data) => {
-          try {
-            // With Fetch
-            // const response = await fetch('/api/issues', {
-            //   method: 'POST',
-            //   headers: {
-            //     'Content-type': 'application/json',
-            //   },
-            //   body: JSON.stringify(data),
-            // });
-            // if (!response.ok) {
-            //   const errorData = await response.json();
-            //   throw new Error();
-            // }
-            await axios.post('/api/issues', data);
-            router.push('/issues');
-          } catch (error) {
-            setError('An unexpected error occurred.');
-          }
-        })}
-      >
+      <form className="max-w-xl space-y-3" onSubmit={onSubmit}>
         <TextField.Root>
           <TextField.Input placeholder="Title" {...register('title')} />
         </TextField.Root>
