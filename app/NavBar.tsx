@@ -1,5 +1,6 @@
 'use client';
 
+import { Skeleton } from '@/app/components';
 import {
   Avatar,
   Box,
@@ -8,11 +9,11 @@ import {
   Flex,
   Text,
 } from '@radix-ui/themes';
+import classnames from 'classnames';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AiFillBug } from 'react-icons/ai';
-import { cn } from './lib/utils';
 
 const NavBar = () => {
   return (
@@ -45,7 +46,8 @@ const NavLinks = () => {
       {links.map((link) => (
         <li key={link.href}>
           <Link
-            className={cn('nav-link', {
+            className={classnames({
+              'nav-link': true,
               '!text-zinc-900': link.href === currentPath,
             })}
             href={link.href}
@@ -61,7 +63,15 @@ const NavLinks = () => {
 const AuthStatus = () => {
   const { status, data: session } = useSession();
 
-  if (status === 'loading') return null;
+  if (status === 'loading')
+    return (
+      <Skeleton
+        height="2rem"
+        width="2rem"
+        circle={true}
+        containerClassName="flex"
+      />
+    );
 
   if (status === 'unauthenticated')
     return (
